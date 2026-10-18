@@ -1,0 +1,17 @@
+This repository uses separate licenses for documentation and code.
+
+1. Documentation license — CC BY 4.0
+
+README.md, COPYRIGHT.md, CITATION.cff, the data/ directory, diagrams,
+reference data, and explanatory prose are licensed under the Creative Commons
+Attribution 4.0 International License. See LICENSE-DOCS.
+
+2. Code and Skill license — Apache License 2.0
+
+The examples/ and skills/ directories are licensed under the Apache License,
+Version 2.0. See LICENSE-CODE and NOTICE.
+
+Copyright © 2026 Cathy Song / CS. AI Growth Studio.
+
+If a file contains its own license notice, that notice controls for that file.
+Third-party materials remain subject to their respective terms.

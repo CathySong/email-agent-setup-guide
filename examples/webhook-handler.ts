@@ -1,3 +1,8 @@
+/*
+ * Copyright 2026 Cathy Song / CS. AI Growth Studio
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 /**
  * 邮件 Agent 入站 webhook 示例（Resend + Express）
  *

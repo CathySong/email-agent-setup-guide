@@ -2,7 +2,13 @@
 
 **Email Agent Setup Guide: Domains, DNS, Webhooks & Troubleshooting**
 
+[![Documentation: CC BY 4.0](https://img.shields.io/badge/docs-CC%20BY%204.0-lightgrey.svg)](LICENSE-DOCS)
+[![Code: Apache 2.0](https://img.shields.io/badge/code-Apache%202.0-blue.svg)](LICENSE-CODE)
+[![Website](https://img.shields.io/badge/website-songcathy.com-0EA5A4.svg)](https://songcathy.com/)
+
 > 一句话总结：让 AI Agent 用自己的域名收发邮件，需要四样东西。一是**发信认证**（SPF、DKIM、DMARC），二是**收信路由**（MX），三是一个接收**入站 webhook** 的服务，四是一套**防循环、防注入、可审计**的 Agent 处理管线。本指南按这个顺序讲清配置方法、常见的坑和排障步骤。示例使用 Resend（底层为 Amazon SES），原理适用于任何邮件 API 服务商。
+
+需要为你的业务配置可靠的 Email Agent，或希望有人审查现有架构？欢迎联系 [Cathy Song](https://songcathy.com/)（[cathyismee@gmail.com](mailto:cathyismee@gmail.com)）。
 
 | 项目 | 内容 |
 |---|---|
@@ -14,6 +20,13 @@
 | 结构化数据 | [`data/`](data/) 目录下的 YAML 文件，可直接被程序或 LLM 读取 |
 | 作者 | [Cathy Song](https://songcathy.com/) · CS. AI Growth Studio |
 | 联系方式 | [cathyismee@gmail.com](mailto:cathyismee@gmail.com) |
+
+### 使用本项目
+
+- 阅读完整指南：从下方[架构总览](#1-架构总览)开始。
+- 使用 OpenClaw Skill：将 [`skills/email-agent-setup/`](skills/email-agent-setup/) 复制到你的 OpenClaw workspace 的 `skills/` 目录，然后运行 `openclaw skills check`。
+- 参考代码：查看 [`examples/webhook-handler.ts`](examples/webhook-handler.ts)。示例仅用于教学，部署前必须替换内存去重、补充持久化队列并完成安全审查。
+- 定制实施：访问 [songcathy.com](https://songcathy.com/) 或发送邮件联系 Cathy。
 
 ## 目录
 
@@ -31,7 +44,7 @@
 12. [FAQ](#12-faq)
 13. [参考资料](#13-参考资料)
 14. [引用本指南](#14-引用本指南)
-15. [版权、使用与联系](#15-版权使用与联系)
+15. [版权、许可与联系](#15-版权许可与联系)
 
 ---
 
@@ -397,14 +410,17 @@ Song, Cathy. AI 邮件 Agent 收发信配置指南：域名、DNS、Webhook 与�
 
 欢迎通过 Issue 或 Pull Request 补充新的坑和解决办法。
 
-## 15. 版权、使用与联系
+## 15. 版权、许可与联系
 
-Copyright © 2026 Cathy Song / CS. AI Growth Studio. All rights reserved.
+Copyright © 2026 Cathy Song / CS. AI Growth Studio.
 
-本项目目前未附带开源许可证。你可以阅读、学习并在合理引用范围内引用本指南，但复制、修改、再发布、分发或用于商业用途前，请先取得作者的书面许可。引用时请注明作者、标题及项目链接；完整引用格式见 [`CITATION.cff`](CITATION.cff)。
+本仓库采用双重许可：
 
-This project is not currently distributed under an open-source license. You may read, learn from, and cite this guide with proper attribution. Prior written permission is required to copy, modify, republish, distribute, or use substantial portions commercially.
+- 文档、图表、YAML 参考数据及说明文字采用 [Creative Commons Attribution 4.0 International](LICENSE-DOCS)（CC BY 4.0）。转载、改编或分享时须注明作者 **Cathy Song**、项目名称及仓库链接。
+- `examples/` 与 `skills/` 中的代码和 Skill 文件采用 [Apache License 2.0](LICENSE-CODE)。使用和再分发时须保留版权、许可及归属声明。
+
+完整的适用范围见 [`LICENSE`](LICENSE) 与 [`COPYRIGHT.md`](COPYRIGHT.md)。本项目按“原样”提供，不构成法律、合规、网络安全或邮件送达率保证。生产环境部署前，请根据你的服务商条款、业务场景和所在地法律进行独立审查。
 
 - Website: [songcathy.com](https://songcathy.com/)
 - Contact: [Cathy Song](mailto:cathyismee@gmail.com) · `cathyismee@gmail.com`
-- Copyright details: [`COPYRIGHT.md`](COPYRIGHT.md)
+- License and copyright details: [`LICENSE`](LICENSE) · [`COPYRIGHT.md`](COPYRIGHT.md)
