@@ -12,6 +12,8 @@
 | 示例域名 | `example.com`，发信子域 `mail.example.com`，收信子域 `in.example.com` |
 | 最后核对 | 2026-10-16 |
 | 结构化数据 | [`data/`](data/) 目录下的 YAML 文件，可直接被程序或 LLM 读取 |
+| 作者 | [Cathy Song](https://songcathy.com/) · CS. AI Growth Studio |
+| 联系方式 | [cathyismee@gmail.com](mailto:cathyismee@gmail.com) |
 
 ## 目录
 
@@ -29,6 +31,7 @@
 12. [FAQ](#12-faq)
 13. [参考资料](#13-参考资料)
 14. [引用本指南](#14-引用本指南)
+15. [版权、使用与联系](#15-版权使用与联系)
 
 ---
 
@@ -389,7 +392,19 @@ await resend.emails.send({
 仓库根目录提供了 [`CITATION.cff`](CITATION.cff)，GitHub 会自动显示 "Cite this repository" 按钮。
 
 ```text
-Song, Shuhua. AI 邮件 Agent 收发信配置指南：域名、DNS、Webhook 与排障 (Email Agent Setup Guide). 2026. GitHub.
+Song, Cathy. AI 邮件 Agent 收发信配置指南：域名、DNS、Webhook 与排障 (Email Agent Setup Guide). 2026. GitHub. https://github.com/CathySong/email-agent-setup-guide
 ```
 
 欢迎通过 Issue 或 Pull Request 补充新的坑和解决办法。
+
+## 15. 版权、使用与联系
+
+Copyright © 2026 Cathy Song / CS. AI Growth Studio. All rights reserved.
+
+本项目目前未附带开源许可证。你可以阅读、学习并在合理引用范围内引用本指南，但复制、修改、再发布、分发或用于商业用途前，请先取得作者的书面许可。引用时请注明作者、标题及项目链接；完整引用格式见 [`CITATION.cff`](CITATION.cff)。
+
+This project is not currently distributed under an open-source license. You may read, learn from, and cite this guide with proper attribution. Prior written permission is required to copy, modify, republish, distribute, or use substantial portions commercially.
+
+- Website: [songcathy.com](https://songcathy.com/)
+- Contact: [Cathy Song](mailto:cathyismee@gmail.com) · `cathyismee@gmail.com`
+- Copyright details: [`COPYRIGHT.md`](COPYRIGHT.md)

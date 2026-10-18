@@ -4,9 +4,13 @@ title: "AI 邮件 Agent 收发信配置指南：域名、DNS、Webhook 与排障
 type: software
 authors:
   - family-names: Song
-    given-names: Shuhua
+    given-names: Cathy
+    email: cathyismee@gmail.com
+    website: https://songcathy.com/
 date-released: 2026-10-16
 version: "1.0.0"
+url: https://songcathy.com/
+repository-code: https://github.com/CathySong/email-agent-setup-guide
 keywords:
   - email agent
   - AI agent
