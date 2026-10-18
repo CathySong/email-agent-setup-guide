@@ -1,0 +1,69 @@
+# 邮件 Agent DNS 记录参考（示例域名 example.com，方案 A：收发分离）
+# 值以服务商后台显示为准；以下为 Resend 的典型形式。最后核对：2026-10-16
+version: 1
+last_reviewed: 2026-10-16
+provider_example: resend
+domains:
+  sending: mail.example.com
+  receiving: in.example.com
+  root_untouched: example.com
+records:
+  - id: return-path-mx
+    host: send.mail.example.com
+    type: MX
+    value: "10 feedback-smtp.us-east-1.amazonses.com"
+    purpose: Return-Path，接收退信和投诉
+    direction: send
+    checked_by: 发退信的服务器
+    if_missing: 域名验证不通过；收不到退信事件
+  - id: return-path-spf
+    host: send.mail.example.com
+    type: TXT
+    value: "v=spf1 include:amazonses.com ~all"
+    purpose: SPF，授权服务商的 IP 用这个信封域名发信
+    direction: send
+    checked_by: 收件方服务器（检查信封 MAIL FROM 的域名）
+    if_missing: SPF 失败，DMARC 只能依靠 DKIM 通过
+    pitfalls:
+      - 同一主机名上只能有一条 SPF 记录
+      - 最多 10 次 DNS 查询
+  - id: dkim
+    host: resend._domainkey.mail.example.com
+    type: TXT
+    value: "p=<公钥，从服务商后台复制>"
+    purpose: DKIM 公钥，收件方用它验证签名
+    direction: send
+    checked_by: 收件方服务器（检查签名里 d= 的域名）
+    if_missing: DKIM 失败，DMARC 很可能失败
+    pitfalls:
+      - 值超过 255 字符时，Route 53 要求拆成多段带引号的字符串
+      - 复制时漏字符或多空格
+  - id: dmarc
+    host: _dmarc.mail.example.com
+    type: TXT
+    value: "v=DMARC1; p=none; rua=mailto:dmarc@example.com"
+    purpose: DMARC 策略和汇总报告
+    direction: send
+    checked_by: 收件方服务器（检查可见 From 的域名）
+    if_missing: 沿用根域的 _dmarc；Gmail/Yahoo 对批量发件人可能限流或拒收
+    rollout: [none, quarantine, reject]
+  - id: inbound-mx
+    host: in.example.com
+    type: MX
+    value: "10 inbound-smtp.us-east-1.amazonaws.com"
+    purpose: 入站收信，该子域相当于 catch-all
+    direction: receive
+    checked_by: 任何给该子域发信的服务器
+    if_missing: 来信被退回给发件人
+    pitfalls:
+      - 同一主机名上不要有其他 MX
+      - 不要加在根域上，否则员工邮箱收不到信
+notes:
+  - 2026 年 8 月之后，Resend 新建的域名可能用 CNAME 记录取代 return-path 的 MX 和 TXT；CNAME 不能和同一主机名上的其他记录共存
+  - Cloudflare 上邮件相关的 CNAME 要设为 DNS only
+verify_commands:
+  - dig MX in.example.com +short
+  - dig MX send.mail.example.com +short
+  - dig TXT send.mail.example.com +short
+  - dig TXT resend._domainkey.mail.example.com +short
+  - dig TXT _dmarc.mail.example.com +short

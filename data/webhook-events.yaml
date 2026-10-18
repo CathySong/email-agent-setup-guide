@@ -1,0 +1,43 @@
+# Resend webhook 事件类型及建议处理方式。来源：https://resend.com/docs/dashboard/webhooks/event-types
+# 最后核对：2026-10-16。所有事件的 payload 只含元数据，正文需用 API 获取。
+version: 1
+last_reviewed: 2026-10-16
+dedupe_header: svix-id
+signature_headers: [svix-id, svix-timestamp, svix-signature]
+events:
+  email:
+    - {name: email.sent, when: API 请求成功，开始投递, agent_action: 记录}
+    - {name: email.scheduled, when: 定时邮件进入队列, agent_action: 记录}
+    - {name: email.delivered, when: 收件方服务器已接受（不代表进收件箱）, agent_action: 记录}
+    - {name: email.delivery_delayed, when: 临时错误，正在重试, agent_action: 无需处理}
+    - {name: email.bounced, when: 永久失败, agent_action: 联系人标记为无效并停止发信}
+    - {name: email.failed, when: 发送过程中出错, agent_action: 检查错误后重试}
+    - {name: email.suppressed, when: 地址在 suppression 名单中，未发出, agent_action: 不要重试}
+    - {name: email.opened, when: 收件人打开邮件, agent_action: 仅作参考}
+    - {name: email.clicked, when: 收件人点击链接, agent_action: 仅作参考}
+    - {name: email.complained, when: 被标记为垃圾邮件, agent_action: 停止发信并检查内容和名单}
+    - {name: email.received, when: 收到一封来信, agent_action: 入队并交给 Agent 管线}
+  domain: [domain.created, domain.updated, domain.deleted]
+  contact: [contact.created, contact.updated, contact.deleted, contact.topics.updated]
+  suppression: [suppression.added, suppression.removed]
+  topic: [topic.created, topic.updated, topic.deleted]
+  inbox_private_beta:
+    - inbox.created
+    - inbox.updated
+    - inbox.deleted
+    - inbox.thread.created
+    - inbox.thread.folder.updated
+    - inbox.thread.assigned
+    - inbox.thread.unassigned
+    - inbox.thread.labels.updated
+    - inbox.email.received
+    - inbox.email.sent
+    - inbox.draft.created
+    - inbox.draft.updated
+    - inbox.draft.sent
+    - inbox.draft.deleted
+thresholds:
+  resend_complaint_rate_max: 0.0008
+  resend_bounce_rate_max: 0.04
+  resend_opt_out_days: 7
+  gmail_spam_rate_max: 0.003

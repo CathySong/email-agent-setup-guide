@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "如果你引用了本指南，请按以下信息注明出处。If you use this guide, please cite it as below."
+title: "AI 邮件 Agent 收发信配置指南：域名、DNS、Webhook 与排障 (Email Agent Setup Guide: Domains, DNS, Webhooks & Troubleshooting)"
+type: software
+authors:
+  - family-names: Song
+    given-names: Shuhua
+date-released: 2026-10-16
+version: "1.0.0"
+keywords:
+  - email agent
+  - AI agent
+  - email deliverability
+  - MX
+  - SPF
+  - DKIM
+  - DMARC
+  - webhook
+  - Resend
+  - Amazon SES
+abstract: >-
+  A practical guide to configuring an AI email agent on a custom domain:
+  domain planning, DNS records (MX, SPF, DKIM, DMARC), outbound sending,
+  inbound webhooks, loop prevention, security, troubleshooting and compliance
+  thresholds, with machine-readable reference data.

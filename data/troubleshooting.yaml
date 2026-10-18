@@ -1,0 +1,59 @@
+# 邮件 Agent 常见故障：现象 → 原因 → 确认方法 → 解决。最后核对：2026-10-16
+version: 1
+last_reviewed: 2026-10-16
+issues:
+  - id: domain-pending
+    symptom: 域名一直显示 Pending
+    causes: [主机名重复了域名, 记录加在了错误的 zone, CNAME 与其他记录冲突]
+    check: dig 完整主机名，核对返回值
+    fix: 名称栏只填前缀；确认加在了正确的 hosted zone；冲突时换子域
+  - id: spam-folder
+    symptom: 发出的信进垃圾箱
+    causes: [DMARC 失败, 新域名发量突增, 内容像营销邮件, 名单质量差]
+    check: 原始邮件的 Authentication-Results 头；Google Postmaster Tools
+    fix: 修好认证；逐步提量；写成纯文本；清理名单
+  - id: via-amazonses
+    symptom: Gmail 显示"通过 amazonses.com 发送"
+    causes: [DKIM 的 d= 和 From 的域名不一致]
+    check: 原始邮件里 DKIM-Signature 的 d=
+    fix: from 使用已验证的域名
+  - id: replies-missing
+    symptom: 收不到客户回复
+    causes: [收信子域没有 MX, 有其他数字更小的 MX, 没开收信, webhook 没配, reply_to 指向了别处]
+    check: dig MX；服务商后台的收信记录
+    fix: 按收信流程逐步检查
+  - id: webhook-silent
+    symptom: 后台有信，但 webhook 没触发
+    causes: [没勾选事件, URL 写错, 端点报错]
+    check: 服务商后台的 webhook 投递日志
+    fix: 修好端点后重放事件
+  - id: duplicate-replies
+    symptom: Agent 重复回复同一封信
+    causes: [webhook 处理超时后被重试, 没有去重]
+    check: 日志里同一个 svix-id 出现多次
+    fix: 先入队、立即返回 2xx；按 svix-id 去重
+  - id: bot-loop
+    symptom: 两个自动系统来回发信
+    causes: [没有防循环规则]
+    check: 会话里出现连续的自动回复
+    fix: 检查 Auto-Submitted、Precedence、List-Id 头；会话频率上限；给自己的自动回复加 Auto-Submitted
+  - id: forward-loop
+    symptom: 转发后又收到同一封信
+    causes: [转发目标的 MX 也指向服务商]
+    check: dig MX 转发目标的域名
+    fix: 换一个别的域名的邮箱
+  - id: broken-threading
+    symptom: 回复在对方客户端里不在同一个会话
+    causes: [缺少 In-Reply-To 或 References, "主题没加 Re:", 用了 email_id 而不是 message_id]
+    check: 查看原始邮件头
+    fix: "In-Reply-To 填对方的 message_id，References 填整个会话的 message_id，主题加 Re:"
+  - id: staff-mail-broken
+    symptom: 员工收不到公司邮件
+    causes: [根域 MX 被改成了服务商的入站地址，并且数字最小]
+    check: dig MX example.com
+    fix: 根域恢复原来的邮箱服务商；Agent 收信改到子域
+  - id: bounce-spike
+    symptom: 退信率突然升高
+    causes: [名单过期, 名单是抓取或购买来的]
+    check: 按名单来源统计退信
+    fix: 发送前先做地址验证；停用问题来源
